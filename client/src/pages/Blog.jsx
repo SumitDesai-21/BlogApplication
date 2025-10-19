@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useNavigate} from 'react'
-import { useParams } from 'react-router-dom'
+import React, { useEffect, useState} from 'react'
+import { useParams } from "react-router-dom";
 import { assets, blog_data, comments_data } from '../assets/assets';
 import Navbar from '../components/Navbar';
 import Moment from 'moment'
 import Footer from '../components/Footer';
+import Loader from '../components/Loader';
 const Blog = () => {
 
   const {id} = useParams();
@@ -32,8 +33,8 @@ const Blog = () => {
 
   return data ? (
     <div className='relative'>
-      <img src={assets.gradientBackground} alt="" className='absolute -top-50 -z-1 opacity-50' />
-      <Navbar/>
+      <img src={assets.gradientBackground} alt="" className='absolute -top-50 -z-10 opacity-50 pointer-events-none' />
+      <Navbar />
       
       <div className='text-center mt-20 text-gray-600'>
         <p className='text-blue-700 py-4 font-medium'>Published on {Moment(data.createdAt).format('MMMM Do YYYY')}</p>
@@ -92,7 +93,7 @@ const Blog = () => {
 
       <Footer/>
     </div>
-  ) : <div>Loading...</div>
+  ) : <Loader/>
 }
 
 export default Blog
