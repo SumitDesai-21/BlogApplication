@@ -79,7 +79,7 @@ const Blog = () => {
               <button type='submit' className='bg-blue-700 text-white rounded p-2 px-8 hover:scale-102 transition-all cursor-pointer'>Submit</button>
             </form>
         </div>
-          {/* social media */}
+          {/* social media icons*/}
         <div className='my-24 max-w-3xl mx-auto'>
           <p className='font-semibold my-4'>Share this article on social media</p>
 
