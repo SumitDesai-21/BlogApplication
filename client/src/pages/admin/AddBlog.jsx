@@ -90,14 +90,22 @@ const AddBlog = () => {
             })}
           </select>
 
-          <div className='flex gap-2 mt-4'>
-            <p>Publish Now</p>
-            <input type="checkbox" checked={isPublished} className='scale-125 cursor-pointer'
-            onChange={e => e.target.checked}/>
+          <div className='mt-4 flex items-center gap-2'>
+            <input 
+              type="checkbox" 
+              id="published"
+              checked={isPublished}
+              onChange={e => setIsPublished(e.target.checked)}
+              className='cursor-pointer'
+            />
+            <label htmlFor="published" className='text-gray-700 cursor-pointer'>Publish immediately</label>
           </div>
-
-          <button type='submit' className='mt-8 w-40 h-10 bg-blue-700 text-white 
-          rounded cursor-pointer text-sm'>Add Blog</button>
+          
+          <button 
+            type='submit'
+            className='mt-6 w-full sm:w-auto px-8 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors'>
+            Add Blog
+          </button>
         </div>
       </form>
     </div>
