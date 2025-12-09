@@ -12,5 +12,6 @@ const blogSchema = new mongoose.Schema({
 
 // now lets create model
 const Blog = mongoose.model('blog', blogSchema);
+
 export default Blog; // created blog model
 // we can store data in the data base using blog model

@@ -1,5 +1,6 @@
 import fs from 'fs';
 import imagekit from '../config/imageKit.js';
+import Blog from '../models/Blog.js';
 // upload blog images on imageKit.
 
 export const addBlog = async (req, res) =>{
@@ -23,8 +24,27 @@ export const addBlog = async (req, res) =>{
             fileName: imageFile.originalname,
             folder: "/blog" // all blog images would be uploaded to blogs folder.
         })
+
+        // optimization through imageKit URL Transformation.
+        const optimizedImageURL = imagekit.url({
+            path: response.filePath,
+
+            // transformation to reduce size & format that every web browser could support. 
+            transformation: [
+                {quality: 'auto'}, // Auto compression
+                {format: 'webp'}, // convert to modern format
+                {width: '1280'} // width resize
+            ]
+        });
+
+        const image = optimizedImageURL; // image url
+        // we've all the data (blog data: title, subtitle, description, image etc)
+        // now we'll store this data into MONGODB
+
+        await Blog.create({title, subTitle, description, category, image, isPublished}); // await ur blog model
+        res.json({success: true, message: "Blog Added Successfully"});
     }   
     catch(error){
-
+        res.json({success: false, message: error.message});
     }
 }

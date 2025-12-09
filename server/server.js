@@ -3,6 +3,7 @@ import 'dotenv/config' // to use environment variables
 import cors from 'cors' // to connect backend with frontend
 import connectDB from './config/db.js';
 import adminRouter from './routes/adminRoutes.js';
+import blogRouter from './routes/blogRoutes.js';
 
 // create express application
 const app = express();
@@ -19,6 +20,8 @@ app.get('/', (req, res)=>{
 })
 
 app.use("/api/admin", adminRouter);
+app.use("/api/blog", blogRouter);
+// API endpoint using that user can upload new blog post & image will be uploaded on media kit.
 
 const PORT = process.env.PORT || 3000;
 
