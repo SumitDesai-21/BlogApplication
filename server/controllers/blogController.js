@@ -1,6 +1,7 @@
 import fs from 'fs';
 import imagekit from '../config/imageKit.js';
 import Blog from '../models/Blog.js';
+import Comment from '../models/Comments.js';
 // upload blog images on imageKit.
 
 const addBlog = async (req, res) =>{
@@ -96,10 +97,36 @@ export const togglePublish = async(req, res)=>{
         const blog = await Blog.findById(id);
         blog.isPublished = !blog.isPublished; // true to false & vice versa
         await blog.save();
-        res.json({success: true, message: "Blog status updated"});
+        res.json({success: true, message: "Blog status updated."});
     }
     catch(error){
         res.json({success: false, message: error.message});
     }
 }
+
+export const addComment = async (req, res) =>{
+    try{
+        const {blog, name, content} = req.body;
+        await Comment.create({blog, name, content});
+
+        res.json({success:true, message: "Comment Added For Review."});
+    }
+    catch(error){
+        res.json({success:false, message: error.message});
+    }
+}
+// API for blog comments.
+export const getBlogComments = async (req, res) =>{
+    try{
+        // access blog ID from request body.
+        const { blogId } = req.body;
+        const comments = await Comment.find({blog: blogId, isApproved: true}).sort({createdAt: -1});
+
+        res.json({success:true, comments});
+    }
+    catch(error){
+        res.json({success:false, message: error.message});
+    }
+}
+
 export default addBlog;
