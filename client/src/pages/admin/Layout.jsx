@@ -20,9 +20,9 @@ const Layout = () => {
         />
         <button
           onClick={logout}
-          className="text-sm px-8 py-2 bg-blue-700 text-white rounded-full cursor-pointer"
+          className="text-sm px-8 py-2 bg-blue-700 text-white rounded-full cursor-pointer hover:scale-105 transition-all"
         >
-          Logout
+          <b>Logout</b>
         </button>
       </div>
 
