@@ -1,10 +1,17 @@
 import express from 'express'
-import adminLogin from '../controllers/adminController.js';
+import adminLogin, { deleteCommentById, getAllBlogsAdmin, getAllComments, ApproveCommentById, getDashBoard } from '../controllers/adminController.js';
+import auth from '../middleware/auth.js';
 
 const adminRouter = express.Router();
 
 
-// adminLogin Controller (path, callback)
+// admin dashbaord endpoints.
 adminRouter.post("/login", adminLogin);
+adminRouter.get("/comments", auth, getAllComments); // only accesible to admin
+adminRouter.get("/blogs", auth, getAllBlogsAdmin);
+adminRouter.post("/delete-comment", auth, deleteCommentById);
+adminRouter.post("/approve-comment", auth, ApproveCommentById);
+adminRouter.get("/dashboard", auth, getDashBoard);
+
 
 export default adminRouter;
