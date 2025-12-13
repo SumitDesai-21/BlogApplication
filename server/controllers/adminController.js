@@ -103,7 +103,3 @@ export const ApproveCommentById = async (req, res)=>{
     }
 }
 export default adminLogin;
-
-
-// connect backend with frontend so that we can create a fully functional blog application
-// where admin can post a new blog post 
