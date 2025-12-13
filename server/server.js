@@ -31,6 +31,5 @@ app.listen(PORT, ()=>{
 })
 export default app;
 
-
 // connect backend with frontend so that we can create a fully functional blog application
 // where admin can post a new blog post & user can read blog post on website
