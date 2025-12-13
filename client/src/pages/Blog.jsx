@@ -5,18 +5,30 @@ import Navbar from '../components/Navbar';
 import Moment from 'moment'
 import Footer from '../components/Footer';
 import Loader from '../components/Loader';
+import { useAppContext } from '../context/AppContext';
+import toast from 'react-hot-toast';
 const Blog = () => {
 
   const {id} = useParams();
+
+  const { axios } = useAppContext();
 
   const [data, setData] = useState(null);
   const [comment, setComment] = useState([]);
   const [name, setName] = useState("");
   const [content, setContent] = useState("");
 
-  const fetchBlogData = async()=>{   
-    const data = blog_data.find(item=> item._id === id)
-    setData(data);
+  const fetchBlogData = async()=>{  
+    // This was fetching dummy data. 
+    // const data = blog_data.find(item=> item._id === id)
+    // setData(data);
+
+    try {
+      const { data } = await axios.get(`/api/blog/${id}`);
+      data.success ? setData(data.blog) : toast.error(data.message);
+    } catch (error) {
+      toast.error(error.message);
+    }
   }   
 
   const fetchComments = async() =>{
