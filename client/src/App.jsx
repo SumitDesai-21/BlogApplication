@@ -9,15 +9,22 @@ import ListBlog from './pages/admin/ListBlog'
 import Comments from './pages/admin/Comments'
 import Login from './components/admin/Login'
 import 'quill/dist/quill.snow.css'
+import { Toaster } from 'react-hot-toast'
+import { useAppContext } from './context/AppContext'
 
 const App = () => {
+
+  // check if token exists or not
+  const { token } = useAppContext();
+
   return (
-    <div>
+    <div> 
+      <Toaster/> { /* so that we can use toast notifications*/ }
       <Routes>
         <Route path='/' element = {<Home/>}/>
         <Route path='/blog/:id' element = {<Blog/>}/>
         {/* if user logged in then only show layout else show login component */}
-        <Route path='/admin' element={true ? <Layout/> : <Login/>}>
+        <Route path='/admin' element={token ? <Layout/> : <Login/>}>
           <Route index element={<Dashboard/>}/>
           <Route path='addBlog' element={<AddBlog/>}/>
           <Route path='listBlog' element={<ListBlog/>}/>
