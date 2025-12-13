@@ -14,7 +14,7 @@ const Blog = () => {
   const { axios } = useAppContext();
 
   const [data, setData] = useState(null);
-  const [comment, setComment] = useState([]);
+  const [comments, setComments] = useState([]);
   const [name, setName] = useState("");
   const [content, setContent] = useState("");
 
@@ -32,11 +32,36 @@ const Blog = () => {
   }   
 
   const fetchComments = async() =>{
-    setComment(comments_data);
+    try {
+      const { data } = await axios.post('api/blog/comments', {blogId: id}); // id accessed from useparams;
+      if(data.success){
+        setComments(data.comments); 
+      }
+      else{
+        toast.error(data.message);  
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   }
 
+
+  // function to add comment on blog posts
   const addComment = async(e)=>{
     e.preventDefault(); 
+    try {
+      const { data } = await axios.post('api/blog/add-comment', {blog: id, name, content}); // id accessed from useparams;
+      if(data.success){
+        toast.success(data.message);
+        setName('');
+        setContent('');
+      }
+      else{
+        toast.error(data.message);  
+      }
+    } catch (error) {
+        toast.error(error.message);
+    }
   }
   useEffect(()=>{
     fetchBlogData();
@@ -63,9 +88,9 @@ const Blog = () => {
 
       {/* comments section */}
       <div className='mt-14 mb-10 max-w-3xl mx-auto'>
-        <p className='font-semibold mb-4'>Comments ({comment.length})</p>
+        <p className='font-semibold mb-4'>Comments ({comments.length})</p>
         <div className='flex flex-col gap-4'>
-          {comment.map((item, index)=>(
+          {comments.map((item, index)=>(
             <div key={index} className='relative bg-blue-700/2 border border-blue-700/5 max-w-xl p-4 rounded text-gray-600'>
 
               <div>
