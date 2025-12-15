@@ -2,6 +2,7 @@ import fs from 'fs';
 import imagekit from '../config/imageKit.js';
 import Blog from '../models/Blog.js';
 import Comment from '../models/Comments.js';
+import main from '../config/gemini.js';
 // upload blog images on imageKit.
 
 const addBlog = async (req, res) =>{
@@ -81,7 +82,7 @@ export const getBlogByID = async (req, res)=>{
 export const deleteBlogByID = async (req, res)=>{
     try{
         // get the blog id from parameter
-        const { id } = req.body();
+        const { id } = req.body;
         await Blog.findByIdAndDelete(id);
         res.json({success: true, message: "Blog Deleted Successfully"});
     }   
@@ -129,4 +130,17 @@ export const getBlogComments = async (req, res) =>{
     }
 }
 
+export const generateContent = async(req, res)=>{
+    try {
+        const { prompt } = req.body;
+        // provide prompt to gemini
+        const content = await main(prompt + ' Generate a blog content for this topic in simple text format');
+        res.json({success: true, content});
+    } catch (error) {
+        res.json({success:false, message: error.message});
+    }
+}
+// using this controller function we'll create API endpoint
+
 export default addBlog;
+
