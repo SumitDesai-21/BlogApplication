@@ -57,7 +57,8 @@ export const getDashBoard = async(req, res)=>{
         const recentBlogs = await Blog.find({}).sort({createdAt: -1}).limit(5); 
         // get 5 recent blogs // in decreasing order of there timestamps
         const blogs = await Blog.countDocuments(); // counts total number of blogs
-        const comments = await Comment.countDocuments();
+        // count only approved comments for dashboard display
+        const comments = await Comment.countDocuments({ isApproved: true });
         const drafts = await Blog.countDocuments({isPublished: false}); 
 
 
@@ -77,7 +78,7 @@ export const getDashBoard = async(req, res)=>{
 
 export const deleteCommentById = async (req, res)=>{
     try{
-        const {id} = req.body(); // access comment id from req body
+        const {id} = req.body; // access comment id from req body
         await Comment.findByIdAndDelete(id);
 
         // delete all comments associated with blog
@@ -94,7 +95,7 @@ export const deleteCommentById = async (req, res)=>{
 
 export const ApproveCommentById = async (req, res)=>{
     try {
-        const {id} = req.body(); // fetch id from request body
+        const {id} = req.body; // fetch id from request body
         await Comment.findByIdAndUpdate(id, {isApproved: true});
         res.json({success: true, message: "Comment Approved Successfully."});
 
