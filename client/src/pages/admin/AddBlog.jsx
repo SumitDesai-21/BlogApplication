@@ -3,6 +3,7 @@ import { assets, blogCategories } from '../../assets/assets'
 import Quill from 'quill';  
 import { useAppContext } from '../../context/AppContext';
 import toast from 'react-hot-toast';
+import {parse} from 'marked';
 
 const AddBlog = () => {
 
@@ -10,7 +11,7 @@ const AddBlog = () => {
   const [isAdding, setIsAdding] = useState(false);
   // when we'll upload blog it'll take some time to upload data to the database using API
   // until then we'll we'll disble button & would show Adding...
-
+  const [loading, setLoading] = useState(false);
 
   const editorRef = useRef(null);
   const quillRef = useRef(null); // rich text
@@ -67,6 +68,24 @@ const AddBlog = () => {
   }, [])
   
   const generateContent = async() => {
+    if(!title) return toast.error('Please enter a title.');
+    try { 
+      // it'll take some time to load 
+      // use loader 
+      setLoading(true);
+      const { data } = await axios.post('/api/blog/generate', {prompt: title});
+      if(data.success){
+        quillRef.current.root.innerHTML = parse(data.content); // parse blog content
+      }
+      else{
+        toast.error(data.message);
+      } 
+    } catch (error) {
+        toast.error(error.message);
+    }
+    finally{
+      setLoading(false); // after that stop loading
+    }
   }
   
   return (
@@ -111,8 +130,14 @@ const AddBlog = () => {
           
           <p className='mt-4 text-gray-700 font-medium'>Blog Description</p>
           <div className='w-full mt-2 relative'>
-            <div ref={editorRef} className='h-72 border border-gray-300 rounded'></div>
+          <div ref={editorRef} className='border border-gray-300 rounded'></div>
+            { loading && (
+                <div className='absolute inset-0 flex items-center justify-center bg-black/10 rounded'> 
+                  <div className='w-10 h-10 rounded-full border-4 border-white/60 border-t-blue-700 animate-spin'></div>
+                </div>
+            ) }
             <button 
+              disabled={loading} //if loading disable button
               onClick={generateContent} 
               type='button' 
               className='absolute bottom-2 right-2 text-xs text-white bg-blue-700 px-4 py-1.5 rounded hover:underline cursor-pointer z-10'

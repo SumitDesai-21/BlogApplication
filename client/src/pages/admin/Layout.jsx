@@ -1,12 +1,21 @@
 import React from "react";
 import { assets } from "../../assets/assets";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import Sidebar from "../../components/admin/Sidebar";
+import { useAppContext } from "../../context/AppContext";
 
 const Layout = () => {
-  const navigate = useNavigate();
+
+  const { axios, setToken, navigate } = useAppContext(); 
+
   const logout = () => {
-    navigate("/");
+    // navigate("/");
+    // logout user 
+    localStorage.removeItem('token'); // remove token fromo local storage 
+    // why added first ? so that even if user refreshes token it's kept in localstorage.
+    axios.defaults.headers.common['Authorization'] = null;
+    setToken(null);
+    navigate('/');
   };
 
   return (
@@ -23,7 +32,7 @@ const Layout = () => {
           className="text-sm px-8 py-2 bg-blue-700 text-white rounded-full cursor-pointer hover:scale-105 transition-all"
         >
           <b>Logout</b>
-        </button>
+        </button> 
       </div>
 
       <div className="flex h-[calc(100vh-70px)]">
