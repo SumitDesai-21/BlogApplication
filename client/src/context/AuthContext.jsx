@@ -6,7 +6,7 @@ import axios from "axios";
 const AuthContext = createContext({});
 
 const client = axios.create({
-    baseURL: "http://localhost:3000/auth"
+    baseURL: import.meta.env.VITE_BASE_URL
 })
 export default AuthContext;
 
