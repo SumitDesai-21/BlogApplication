@@ -18,8 +18,7 @@ blogRouter.post(
 	},
 	addBlog
 );
-blogRouter.get('/all', getAllBlogs); // get all blogs 
-blogRouter.get('/:blogId', getBlogByID);    
+blogRouter.get('/all', getAllBlogs); // get all blogs     
 blogRouter.post('/delete',auth, deleteBlogByID);    
 blogRouter.post('/toggle-publish',auth, togglePublish);
 // comment part
@@ -28,4 +27,5 @@ blogRouter.post('/comments', getBlogComments);
 blogRouter.post('/generate', auth, generateContent); // link this API with frontend
 // add middleware
 // to parse the image we'll use the multer package.
+blogRouter.get('/:blogId', getBlogByID);
 export default blogRouter; 
